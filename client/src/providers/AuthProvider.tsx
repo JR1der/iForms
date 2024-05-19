@@ -1,4 +1,4 @@
-import React, {createContext, ReactNode, useEffect} from "react";
+import React, {createContext, ReactNode} from "react";
 import {useNavigate} from "react-router-dom";
 import {useLocalStorage} from "../hooks/useLocalStorage.ts"
 
@@ -6,6 +6,14 @@ export type LoginUserData = {
     email: string;
     password: string;
 };
+
+export type RegisterUserData = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+};
+
 
 export type User = {
     email: string;
@@ -21,7 +29,8 @@ type AuthContext = {
     user: User | null;
     accessToken: string | null;
     isAuthenticated: boolean;
-    onLogin: (loginData: LoginUserData) => void;
+    onLogin: (loginData: LoginUserData) => Promise<{ error?: string }>;
+    onRegister: (registerData: RegisterUserData) => Promise<{ error?: string }>;
     onLogout: () => void;
 };
 
@@ -38,7 +47,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
         ? (JSON.parse(atob(accessToken.split(".")[1])) as User)
         : null;
 
-    const onLogin = async (loginData: LoginUserData) => {
+    const onLogin = async (loginData: LoginUserData): Promise<{ error?: string }> => {
         const body = {
             email: loginData.email,
             password: loginData.password,
@@ -50,10 +59,38 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             },
             body: JSON.stringify(body),
         });
+
         const resBody = await res.json();
+
         if (resBody.status === "SUCCESS") {
             setAccessToken(resBody.accessToken);
             navigate("/");
+            return {};
+        } else {
+            return {error: resBody.message};
+        }
+    };
+
+    const onRegister = async (registerData: RegisterUserData): Promise<{ error?: string }> => {
+        const body = {
+            firstName: registerData.firstName,
+            lastName: registerData.lastName,
+            email: registerData.email,
+            password: registerData.password,
+        };
+
+        const res = await fetch("http://localhost:3000/user/auth/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+        });
+
+        const resBody = await res.json();
+
+        if (resBody.status === "SUCCESS") {
+            return onLogin({email: registerData.email, password: registerData.password});
         } else {
             return {error: resBody.message};
         }
@@ -70,6 +107,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
                 accessToken,
                 isAuthenticated: false,
                 onLogin,
+                onRegister,
                 onLogout,
             }}
         >

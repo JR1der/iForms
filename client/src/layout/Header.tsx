@@ -14,7 +14,8 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import {Link} from "@mui/material";
 
 const pages = {'Home': '/'};
-const settings = {'Profile': '/profile', 'Login': '/auth/login', 'Sign Up': '/auth/signup'};
+const authSettings = {'Profile': '/profile', 'Logout': '/auth/logout'};
+const guestSettings = {'Login': '/auth/login', 'Sign Up': '/auth/signup'};
 
 export const Header = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -34,6 +35,18 @@ export const Header = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const logoutHandler = () => {
+        localStorage.setItem('accessToken', "null");
+        window.location.reload();
+    };
+
+    const token = localStorage.getItem('accessToken');
+
+    const isAuthenticated = token !== "null" && token !== undefined && token !== null;
+
+    const settings = isAuthenticated ? authSettings : guestSettings;
+
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
@@ -148,7 +161,10 @@ export const Header = () => {
                             onClose={handleCloseUserMenu}
                         >
                             {Object.entries(settings).map(([setting, path]) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                <MenuItem
+                                    key={setting}
+                                    onClick={setting === 'Logout' ? logoutHandler : handleCloseUserMenu}
+                                >
                                     <Link href={path} color="inherit" underline="none">
                                         <Typography textAlign="center">{setting}</Typography>
                                     </Link>

@@ -4,8 +4,9 @@ import {object, string} from "yup";
 import Container from "@mui/material/Container";
 import {Box, CssBaseline, Grid, Link, TextField, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
-import axios from "axios";
 import {useState} from "react";
+import {useAuth} from "../../providers/AuthProvider.tsx";
+import {useNavigate} from "react-router-dom";
 
 const validationSchema = object({
         firstName: string().required('First name is required'),
@@ -31,44 +32,19 @@ const initialFormValues: RegisterUserData = {
 
 export const RegisterPage = () => {
     const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
-
-    const onSubmitRegisterForm = async (values: RegisterUserData) => {
-        const body = {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: values.email,
-            password: values.password,
-        };
-        try {
-            const res = await axios.post("http://localhost:3000/user/auth/signup", body);
-            console.log(res.data);
-            if (res.data.status === "FAILED") {
-                setSuccess("");
-                setError(res.data.message);
-            }
-            if (res.data.status === "SUCCESS") {
-                setError("");
-                setSuccess(res.data.message);
-            }
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                if (err.response) {
-                    console.error("Error registering user:", err.response.data);
-                } else if (err.request) {
-                    console.error("Error registering user: No response received");
-                }
-            } else {
-                console.error("Error registering user:", (err as Error).message);
-            }
-        }
-    };
+    const {onRegister} = useAuth();
+    const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: initialFormValues,
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            onSubmitRegisterForm(values);
+        onSubmit: async (values) => {
+            const result = await onRegister(values);
+            if (result.error) {
+                setError(result.error);
+            } else {
+                navigate("/");
+            }
         },
     });
 
@@ -90,11 +66,6 @@ export const RegisterPage = () => {
                     {error && (
                         <Typography variant="body1" color="error" align="center">
                             {error}
-                        </Typography>
-                    )}
-                    {success && (
-                        <Typography variant="body1" color="green" align="center">
-                            {success}
                         </Typography>
                     )}
                     <form onSubmit={formik.handleSubmit}>

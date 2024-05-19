@@ -1,30 +1,9 @@
-import {useEffect, useState} from "react";
-import {getDecodedToken} from "../utils/getDecodedToken.ts";
-import {useNavigate} from "react-router-dom";
 import {BaseLayout} from "../layout/BaseLayout.tsx";
-
-interface DecodedToken {
-    firstName: string;
-    lastName: string;
-    email: string;
-    exp: number;
-    iat: number;
-}
+import {useAuth} from "../providers/AuthProvider.tsx";
 
 export const HomePage = () => {
-    const [user, setUser] = useState<DecodedToken | null | undefined>(undefined);
-    const navigate = useNavigate();
+    const {user} = useAuth()
 
-    useEffect(() => {
-        const decodedToken = getDecodedToken() as DecodedToken | null;
-        if (decodedToken && decodedToken.exp > Date.now() / 1000) {
-            setUser(decodedToken);
-        } else {
-            localStorage.removeItem("accessToken");
-            setUser(null);
-            navigate('/auth/login');
-        }
-    }, [navigate]);
     return (
         <BaseLayout>
             {user ? (

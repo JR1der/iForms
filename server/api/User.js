@@ -6,23 +6,6 @@ const jwt = require('jsonwebtoken');
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
-router.get('/', async (req, res) => {
-    try {
-        console.log('get succ')
-        const users = await User.find();  // Fetch all users from the database
-        res.json({
-            status: "SUCCESS",
-            data: users
-        });
-    } catch (error) {
-        res.json({
-            status: "FAILED",
-            message: "An error occurred while fetching users",
-            error: error.message
-        });
-    }
-})
-
 // Signup
 router.post('/auth/signup', (req, res) => {
     console.log('Sign up')
