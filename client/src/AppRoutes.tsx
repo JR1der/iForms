@@ -4,6 +4,9 @@ import {RegisterPage} from "./pages/auth/RegisterPage.tsx";
 import {HomePage} from "./pages/HomePage.tsx";
 import {useAuth} from "./providers/AuthProvider.tsx";
 import {ProfilePage} from "./pages/ProfilePage.tsx";
+import {FormsPage} from "./pages/FormsPage/FormsPage.tsx";
+import {FormPage} from "./pages/FormPage/FormPage.tsx";
+import {CreatePage} from "./pages/CreatePage/CreatePage.tsx";
 
 export type RouteConfig = RouteProps & {
     path: string;
@@ -16,7 +19,6 @@ export const AuthNotRequired: React.FC<AuthRequiredProps> = ({children, to = "/"
     if (user) {
         return <Navigate to={to} replace/>;
     }
-
     return <>{children}</>;
 };
 
@@ -32,15 +34,30 @@ export const AuthRequired: React.FC<AuthRequiredProps> = ({children, to = "/auth
 
 export const routes: RouteConfig[] = [
     {
-        isPrivate: true,
+        isPrivate: false,
         path: "/",
         element: <Navigate to="/home" replace/>,
         index: true,
     },
     {
-        isPrivate: true,
+        isPrivate: false,
         path: "/home",
         element: <HomePage/>,
+    },
+    {
+        isPrivate: true,
+        path: "/forms/create",
+        element: <CreatePage/>,
+    },
+    {
+        isPrivate: true,
+        path: "/forms",
+        element: <FormsPage/>,
+    },
+    {
+        isPrivate: true,
+        path: "/form/:id",
+        element: <FormPage/>,
     },
     {
         isPrivate: false,

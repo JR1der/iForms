@@ -1,14 +1,14 @@
 const express = require('express');
-const router = express.Router();
-const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const {v4: uuidv4} = require('uuid');
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const router = express.Router();
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
 // Signup
 router.post('/auth/signup', (req, res) => {
-    console.log('Sign up')
     let {firstName, lastName, email, password} = req.body;
     firstName = firstName.trim();
     lastName = lastName.trim();
@@ -37,6 +37,7 @@ router.post('/auth/signup', (req, res) => {
                 const saltRounds = 10;
                 bcrypt.hash(password, saltRounds).then(hashedPassword => {
                     const newUser = new User({
+                        userId: uuidv4(),
                         firstName,
                         lastName,
                         email,
@@ -74,7 +75,6 @@ router.post('/auth/signup', (req, res) => {
 
 // Login
 router.post('/auth/login', (req, res) => {
-    console.log("Login")
     let {email, password} = req.body;
     if (email === "" || password === "") {
         res.json({
@@ -97,6 +97,7 @@ router.post('/auth/login', (req, res) => {
                             message: "Sign in successful",
                             accessToken: token,
                             user: {
+                                userId: user.userId,
                                 firstName: user.firstName,
                                 lastName: user.lastName,
                                 email: user.email

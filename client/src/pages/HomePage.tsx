@@ -6,11 +6,9 @@ export const HomePage = () => {
 
     return (
         <BaseLayout>
-            {user ? (
-                <h1>Welcome, {user.firstName} {user.lastName}</h1>
-            ) : (
-                <p>Loading...</p>
-            )}
+            <h1>
+                Welcome, {user ? `${user.firstName} ${user.lastName}` : "Guest"}
+            </h1>
         </BaseLayout>
     )
 }

@@ -13,7 +13,8 @@ import DynamicFormIcon from '@mui/icons-material/DynamicForm';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import {Link} from "@mui/material";
 
-const pages = {'Home': '/'};
+const authPages = {'Home': '/', 'Forms': '/forms'};
+const guestPages = {'Home': '/'};
 const authSettings = {'Profile': '/profile', 'Logout': '/auth/logout'};
 const guestSettings = {'Login': '/auth/login', 'Sign Up': '/auth/signup'};
 
@@ -45,6 +46,7 @@ export const Header = () => {
 
     const isAuthenticated = token !== "null" && token !== undefined && token !== null;
 
+    const pages = isAuthenticated ? authPages : guestPages;
     const settings = isAuthenticated ? authSettings : guestSettings;
 
     return (
