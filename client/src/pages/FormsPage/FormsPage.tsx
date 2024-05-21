@@ -1,8 +1,8 @@
 import {BaseLayout} from "../../layout/BaseLayout.tsx";
 import {useAuth} from "../../providers/AuthProvider.tsx";
 import Button from "@mui/material/Button";
-import FormItem from "./Components/FormItem.tsx";
-import ErrorPage from "./Components/ErrorPage.tsx";
+import FormItem from "./components/FormItem.tsx";
+import ErrorPage from "../../components/ErrorPage.tsx";
 import {useForms} from "../../hooks/useForms.ts";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -22,6 +22,7 @@ export const FormsPage = () => {
         <BaseLayout>
             <div>
                 <Button
+                    fullWidth
                     onClick={() => navigate('/forms/create')}
                     variant="contained"
                     color="primary"

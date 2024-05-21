@@ -55,7 +55,7 @@ export const routes: RouteConfig[] = [
         element: <FormsPage/>,
     },
     {
-        isPrivate: true,
+        isPrivate: false,
         path: "/form/:id",
         element: <FormPage/>,
     },

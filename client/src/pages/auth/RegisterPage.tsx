@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import {useState} from "react";
 import {useAuth} from "../../providers/AuthProvider.tsx";
 import {useNavigate} from "react-router-dom";
+import ErrorPage from "../../components/ErrorPage.tsx";
 
 const validationSchema = object({
         firstName: string().required('First name is required'),
@@ -63,12 +64,11 @@ export const RegisterPage = () => {
                     <Typography component="h1" variant="h5" fontWeight="bold">
                         Sign Up
                     </Typography>
-                    {error && (
-                        <Typography variant="body1" color="error" align="center">
-                            {error}
-                        </Typography>
-                    )}
+                    <Box sx={{ mb: 2 }} />
                     <form onSubmit={formik.handleSubmit}>
+                        {error && (
+                            <ErrorPage message={error} type='error' />
+                        )}
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField

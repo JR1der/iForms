@@ -6,6 +6,7 @@ import {Box, CssBaseline, Grid, Link, TextField, Typography} from "@mui/material
 import {useAuth, LoginUserData} from "../../providers/AuthProvider.tsx";
 import Button from "@mui/material/Button";
 import {useState} from "react";
+import ErrorPage from "../../components/ErrorPage.tsx";
 
 const validationSchema = object({
     email: string().email('Enter a valid email').required('Email is required'),
@@ -34,6 +35,7 @@ export const LoginPage = () => {
         <BaseLayout>
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
+
                 <Box
                     sx={{
                         marginTop: 8,
@@ -45,12 +47,11 @@ export const LoginPage = () => {
                     <Typography component="h1" variant="h5" fontWeight="bold">
                         Sign in
                     </Typography>
-                    {error && (
-                        <Typography variant="body1" color="error" align="center">
-                            {error}
-                        </Typography>
-                    )}
+                    <Box sx={{mb: 2}}/>
                     <form onSubmit={formik.handleSubmit}>
+                        {error && (
+                            <ErrorPage message={error} type='error'/>
+                        )}
                         <TextField
                             margin="normal"
                             required

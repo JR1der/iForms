@@ -8,7 +8,7 @@ const FormSchema = new Schema({
     title: {type: String, required: true,},
     questions: [{
         question: {type: String, required: true},
-        type: {type: String, enum: ['text', 'textarea', 'radio', 'checkbox'], required: true}
+        type: {type: String, enum: ['shortAnswer', 'longAnswer', 'rating5','rating10'], required: true}
     }],
     uniqueLink: {type: String, required: true, unique: true},
 })

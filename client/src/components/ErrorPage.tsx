@@ -8,14 +8,16 @@ interface ErrorProps {
 
 const ErrorPage: React.FC<ErrorProps> = ({message, type}) => {
     return (
-        <div style={{
+        <div sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
+            height: '100vh',
+            width: '100%',
+            textAlign: 'center',
+
         }}>
-            <Alert severity={type}>{message}</Alert>
+            <Alert severity={type} >{message}</Alert>
         </div>
     );
 }

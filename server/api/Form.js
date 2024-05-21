@@ -9,6 +9,13 @@ router.post('/create', async (req, res) => {
     const {email, title, questions} = req.body;
     const uniqueLink = uuidv4();
 
+    if (!title) {
+        return res.json({
+            status: "FAILED",
+            message: "You should provide the form with a title!"
+        });
+    }
+
     if (!email || !title || !questions) {
         return res.json({
             status: "FAILED",
@@ -19,7 +26,7 @@ router.post('/create', async (req, res) => {
     if (!Array.isArray(questions) || questions.length === 0) {
         return res.json({
             status: "FAILED",
-            message: "Questions must be a non-empty array of objects"
+            message: "There must be questions to create a form!"
         });
     }
 
@@ -27,7 +34,7 @@ router.post('/create', async (req, res) => {
         if (!question.question || !question.type) {
             return res.json({
                 status: "FAILED",
-                message: "Each question object must have 'question' and 'type' properties"
+                message: "Each question must have a question header and a type!"
             });
         }
         if (typeof question.question !== 'string' || question.question.trim() === '') {
@@ -36,10 +43,10 @@ router.post('/create', async (req, res) => {
                 message: "Question must be a non-empty string"
             });
         }
-        if (typeof question.type !== 'string' || !['radio', 'checkbox', 'text', 'textarea'].includes(question.type)) {
+        if (typeof question.type !== 'string' || !['shortAnswer', 'longAnswer', 'rating5', 'rating10'].includes(question.type)) {
             return res.json({
                 status: "FAILED",
-                message: "Question type must be one of 'radio', 'checkbox', 'text', or 'textarea'"
+                message: "Question type must be one of 'shortAnswer', 'longAnswer', 'rating5' or 'rating10"
             });
         }
     }
@@ -62,7 +69,7 @@ router.post('/create', async (req, res) => {
 
         const savedForm = await newForm.save();
         res.json({
-            status: "SUCESS",
+            status: "SUCCESS",
             message: "The form was successfully created", data: savedForm
         })
     } catch (err) {

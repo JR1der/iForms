@@ -7,15 +7,16 @@
     <list default="true" id="c621f048-3ce0-49a0-b2ed-2103899fd3d2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/AppRoutes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/AppRoutes.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/layout/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/layout/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/pages/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/HomePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/api/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/api/User.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/models/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/models/User.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../server/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../server/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/hooks/useForm.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/hooks/useForm.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/CreatePage/CreatePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/CreatePage/CreatePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/FormPage/FormPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/FormPage/FormPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/FormsPage/Components/ErrorPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/components/ErrorPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/FormsPage/Components/FormItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/FormsPage/components/FormItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/FormsPage/FormsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/FormsPage/FormsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/auth/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/auth/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/auth/RegisterPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/auth/RegisterPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/api/Form.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/api/Form.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/models/Form.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/models/Form.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,21 +34,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Node.js.db.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.index.js.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/ivanpopovych/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Node.js.Form.js.executor": "Run",
+    "Node.js.db.js.executor": "Run",
+    "Node.js.index.js.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Users/ivanpopovych/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/config" />
@@ -70,7 +72,7 @@
       <updated>1716030396308</updated>
       <workItem from="1716030397357" duration="20504000" />
       <workItem from="1716146047779" duration="10670000" />
-      <workItem from="1716221121956" duration="2690000" />
+      <workItem from="1716221121956" duration="14415000" />
     </task>
     <servers />
   </component>
