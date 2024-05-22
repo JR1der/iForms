@@ -5,7 +5,6 @@ const User = require('../models/User');
 const {v4: uuidv4} = require('uuid');
 
 router.post('/create', async (req, res) => {
-    console.log("Form create");
     const {email, title, questions} = req.body;
     const uniqueLink = uuidv4();
 
@@ -29,6 +28,10 @@ router.post('/create', async (req, res) => {
             message: "There must be questions to create a form!"
         });
     }
+    const questionsWithIds = questions.map(question => ({
+        ...question,
+        questionId: uuidv4()
+    }));
 
     for (const question of questions) {
         if (!question.question || !question.type) {
@@ -130,12 +133,29 @@ router.get('/forms/:email?', async (req, res) => {
 router.put('/update/:id', async (req, res) => {
     const {id} = req.params;
     const {title} = req.body;
+    const {questions} = req.body;
 
     if (!title || title.trim() === '') {
         return res.json({
             status: "FAILED",
-            message: "Title parameter is required"
+            message: "Title is required for the form!"
         })
+    }
+
+    if (!questions || questions.length === 0) {
+        return res.json({
+            status: "FAILED",
+            message: "Questions are required for the form!"
+        })
+    }
+
+    const emptyQuestionIndex = questions.findIndex(question => !question.question || !question.question.trim());
+
+    if (emptyQuestionIndex !== -1) {
+        return res.json({
+            status: "FAILED",
+            message: `Question number ${emptyQuestionIndex + 1} has an empty header!`
+        });
     }
 
     try {
@@ -147,14 +167,16 @@ router.put('/update/:id', async (req, res) => {
             });
         }
 
-        if (title === form.title) {
+        if (title === form.title && questions === form.questions) {
             return res.json({
                 status: "FAILED",
-                message: "You should enter a new title!"
-            })
+                message: "You should update something!"
+            });
         }
 
         form.title = title;
+        form.questions = questions;
+
         const updatedForm = await form.save();
 
         res.json({

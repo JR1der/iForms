@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import DynamicFormIcon from '@mui/icons-material/DynamicForm';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import {Link} from "@mui/material";
+import {useAuth} from "../providers/AuthProvider.tsx";
 
 const authPages = {'Home': '/', 'Forms': '/forms'};
 const guestPages = {'Home': '/'};
@@ -19,6 +20,7 @@ const authSettings = {'Profile': '/profile', 'Logout': '/auth/logout'};
 const guestSettings = {'Login': '/auth/login', 'Sign Up': '/auth/signup'};
 
 export const Header = () => {
+    const {user} = useAuth();
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -53,14 +55,13 @@ export const Header = () => {
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <DynamicFormIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 1}}/>
+                    <DynamicFormIcon sx={{display: {xs: 'none', md: 'flex'}}}/>
                     <Typography
                         variant="h6"
                         noWrap
                         component="a"
                         href="/"
                         sx={{
-                            mr: 2,
                             display: {xs: 'none', md: 'flex'},
                             fontFamily: 'monospace',
                             fontWeight: 700,
@@ -131,18 +132,28 @@ export const Header = () => {
                     </Typography>
                     <Box sx={{
                         flexGrow: 1,
-                        display: {xs: 'none', md: 'flex', justifyContent: 'center'}
+                        display: { xs: 'none', md: 'flex', justifyContent: 'center'},
+                        gap: '10px',
                     }}>
                         {Object.entries(pages).map(([page, path]) => (
                             <Link key={path} href={path} color="inherit" underline="none">
-                                <Typography textAlign="center">{page}</Typography>
+                                <Typography variant="h6" textAlign="center">{page}</Typography>
                             </Link>
                         ))}
                     </Box>
 
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                            <IconButton onClick={handleOpenUserMenu} sx={{}}>
+                                {isAuthenticated ? (
+                                    <Typography variant="h6" color="white" sx={{pr:1}}>
+                                        Welcome, {user?.firstName}
+                                    </Typography>
+                                ) : (
+                                    <Typography variant="h6" color="white" sx={{pr:1}}>
+                                        Guest
+                                    </Typography>
+                                )}
                                 <AccountBoxIcon sx={{fontSize: 32, color: 'white'}}/>
                             </IconButton>
                         </Tooltip>
@@ -168,7 +179,7 @@ export const Header = () => {
                                     onClick={setting === 'Logout' ? logoutHandler : handleCloseUserMenu}
                                 >
                                     <Link href={path} color="inherit" underline="none">
-                                        <Typography textAlign="center">{setting}</Typography>
+                                        <Typography variant="h8" textAlign="center">{setting}</Typography>
                                     </Link>
                                 </MenuItem>
                             ))}

@@ -1,11 +1,12 @@
 import {BaseLayout} from "../../layout/BaseLayout.tsx";
-import {useState} from "react";
-import Container from "@mui/material/Container";
+import {useEffect, useState} from "react";
+import {useForm} from "../../hooks/useForm.ts";
+import {useParams} from "react-router-dom";
 import {Box, MenuItem, TextField} from "@mui/material";
-import Button from "@mui/material/Button";
-import {useAuth} from "../../providers/AuthProvider.tsx";
 import ErrorPage from "../../components/ErrorPage.tsx";
-import {CreateFormQuestion} from "./components/CreateFormQuestion.tsx";
+import Button from "@mui/material/Button";
+import {EditFormQuestion} from "./components/EditFormQuestion.tsx";
+import Container from "@mui/material/Container";
 
 const questionTypes = [
     {value: 'shortAnswer', label: 'Short Answer'},
@@ -14,8 +15,9 @@ const questionTypes = [
     {value: 'rating10', label: 'Rating (1-10)'},
 ];
 
-export const CreatePage = () => {
-    const {user} = useAuth();
+export const EditFormPage = () => {
+    const {id} = useParams();
+    const [forms, deleteForm, isLoading, isError] = useForm(id);
     const [title, setTitle] = useState('');
     const [questions, setQuestions] = useState([]);
     const [questionText, setQuestionText] = useState('');
@@ -23,8 +25,15 @@ export const CreatePage = () => {
     const [error, setError] = useState("");
     const [errorType, setErrorType] = useState("");
 
+    useEffect(() => {
+        if (forms.data) {
+            setTitle(forms.data.title || "");
+            setQuestions(forms.data.questions || []);
+        }
+    }, [forms]);
+
     const handleAddQuestion = () => {
-        const newQuestion = {text: questionText, type: questionType};
+        const newQuestion = {question: questionText, type: questionType};
         setQuestions([...questions, newQuestion]);
         setQuestionText('');
         setQuestionType(questionTypes[0].value);
@@ -34,51 +43,47 @@ export const CreatePage = () => {
         setQuestions(questions.filter((_, i) => i !== index));
     };
 
-    const handleQuestionTextChange = (index, newText) => {
-        const updatedQuestions = questions.map((q, i) =>
-            i === index ? {...q, text: newText} : q
-        );
+    const updateQuestionText = (index, newText) => {
+        const updatedQuestions = [...questions];
+        updatedQuestions[index].question = newText;
         setQuestions(updatedQuestions);
     };
 
-    const handleCreateForm = async (email: string) => {
-        if (!user || !user.email) {
-            setError('User email is required');
-            setErrorType('error')
-            return;
-        }
-
-        const form = {
-            email: user.email,
-            title,
-            questions: questions.map((q) => ({question: q.text, type: q.type})),
-        }
-
+    const handleEditForm = async () => {
         try {
-            const res = await fetch('http://localhost:3000/form/create/', {
-                method: "POST",
+            const response = await fetch(`http://localhost:3000/form/update/${id}`, {
+                method: 'PUT',
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(form),
+                body: JSON.stringify({
+                    title: title,
+                    questions: questions,
+                }),
             });
+            const res = await response.json();
 
-            const result = await res.json();
-
-            if (result.status === 'SUCCESS') {
-                setError(result.message);
+            if (res.status === "SUCCESS") {
+                setError(res.message);
                 setErrorType('success');
-                setTitle('');
-                setQuestions([]);
             } else {
-                setError(result.message);
-                setErrorType('warning')
+                setError(res.message);
+                setErrorType('warning');
             }
-        } catch (err) {
-            console.error(err);
-            setError(err.message);
-            setErrorType('error')
+        } catch (error) {
+            setError(`An error occurred while updating the form: ${error}`);
+            setErrorType('error');
         }
+    }
+
+    if (isLoading) {
+        return (
+            <ErrorPage message="Loading..." type="info"/>
+        )
+    }
+
+    if (isError) {
+        return <ErrorPage message="An error occurred while loading the form." type="error"/>;
     }
 
     return (
@@ -93,6 +98,9 @@ export const CreatePage = () => {
                         onChange={(e) => setTitle(e.target.value)}
                         margin="normal"
                     />
+                    <Button fullWidth variant="contained" color="primary" onClick={handleEditForm} sx={{mt: 2}}>
+                        Edit Form
+                    </Button>
                     <TextField
                         fullWidth
                         label="Question Header"
@@ -100,7 +108,7 @@ export const CreatePage = () => {
                         onChange={(e) => setQuestionText(e.target.value)}
                         margin="normal"
                     />
-                    <Box display="flex" display="flex" sx={{
+                    <Box display="flex" sx={{
                         flexDirection: {xs: 'column', sm: 'row'},
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -128,15 +136,12 @@ export const CreatePage = () => {
                             Add Question
                         </Button>
                     </Box>
-                    {questions.map((question, index) => (
-                        <CreateFormQuestion key={index} question={question} index={index}
-                                            handleQuestionTextChange={handleQuestionTextChange}
-                                            handleDeleteQuestion={handleDeleteQuestion}
+                    {questions && questions.map((question, index) => (
+                        <EditFormQuestion key={index} question={question} index={index}
+                                          handleDeleteQuestion={handleDeleteQuestion}
+                                          updateQuestionText={updateQuestionText}
                         />
                     ))}
-                    <Button fullWidth variant="contained" color="primary" onClick={handleCreateForm} sx={{mt: 4}}>
-                        Create Form
-                    </Button>
                 </Box>
             </Container>
         </BaseLayout>

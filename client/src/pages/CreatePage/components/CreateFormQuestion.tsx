@@ -2,7 +2,7 @@ import {Box, Card, CardContent, IconButton, TextField} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 
-export const FormQuestion = ({question, index, handleQuestionTextChange, handleDeleteQuestion}) => {
+export const CreateFormQuestion = ({question, index, handleQuestionTextChange, handleDeleteQuestion}) => {
     return (
         <Card variant="outlined" sx={{my: 2}}>
             <CardContent>

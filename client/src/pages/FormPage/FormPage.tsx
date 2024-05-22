@@ -1,9 +1,9 @@
 import {BaseLayout} from "../../layout/BaseLayout.tsx";
-import {Box, Card, CardContent, TextField, Typography} from "@mui/material";
+import {Box, Card, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useForm} from "../../hooks/useForm.ts";
-import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
 import Container from "@mui/material/Container";
 import ErrorPage from "../../components/ErrorPage.tsx";
 import {useAuth} from "../../providers/AuthProvider.tsx";
@@ -19,26 +19,44 @@ const questionTypes = [
 export const FormPage = () => {
     const {user} = useAuth();
     const {id} = useParams();
-    const [forms, deleteForm, isLoading, error] = useForm(id);
-
+    const [forms, deleteForm, isLoading, isError] = useForm(id);
+    const [error, setError] = useState("");
+    const [answers, setAnswers] = useState([]);
+    const navigate = useNavigate();
 
     const handleEdit = () => {
-        console.log("edit")
-        // Redirect or switch to the create page with the form data pre-filled for editing
-        // This can be achieved using React Router or any navigation library you're using
+        navigate(`/formEdit/${id}`)
+    };
+
+    const handleAnswerChange = (index, answer) => {
+        const updatedAnswers = [...answers];
+        updatedAnswers[index] = answer;
+        console.log(answer)
+        setAnswers(updatedAnswers);
     };
 
     const handleSubmit = () => {
         console.log("Submit")
+        const form = {
+            email: user.email,
+            questions: questions.map((q) => ({question: q.text, type: q.type})),
+        }
+
+        const responses = form.data.questions.map((question, index) => ({
+            questionId: question.questionId,
+            response: question.response,
+            type: question.type
+        }))
+        console.log(responses)
     }
 
     return (
         <BaseLayout>
             <Container>
                 <Box my={4}>
-                    {error && <ErrorPage message={error} type="error"/>}
+                    {isError && <ErrorPage message={error} type="error"/>}
                     {isLoading ? (
-                        <Typography>Loading...</Typography>
+                        <ErrorPage message="Loading..." type="info"/>
                     ) : (
                         <Box>
                             <Card sx={{p: 2}}>

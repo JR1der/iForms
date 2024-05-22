@@ -6,16 +6,28 @@ import ErrorPage from "../../components/ErrorPage.tsx";
 import {useForms} from "../../hooks/useForms.ts";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-
+import {DeleteConfirmationModal} from "./components/DeleteConfirmationModal.tsx";
 
 export const FormsPage = () => {
     const navigate = useNavigate();
     const {user} = useAuth();
     const [forms, deleteForm, isLoading, error] = useForms(user.email);
     const [isAlertVisible] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedFormId, setSelectedFormId] = useState('');
 
     const handleDeleteForm = async (formId: string) => {
         await deleteForm(formId);
+        setModalOpen(false);
+    };
+
+    const handleOpenModal = (formId: string) => {
+        setSelectedFormId(formId);
+        setModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
     };
 
     return (
@@ -41,12 +53,17 @@ export const FormsPage = () => {
                         <div key={form.formId}>
                             <FormItem
                                 form={form}
-                                handleDeleteForm={handleDeleteForm}
+                                handleDeleteForm={() => handleOpenModal(form.formId)}
                             />
                         </div>
                     ))
                 )}
             </div>
+            <DeleteConfirmationModal
+                open={modalOpen}
+                onClose={handleCloseModal}
+                onDelete={() => handleDeleteForm(selectedFormId)}
+            />
         </BaseLayout>
     )
 }

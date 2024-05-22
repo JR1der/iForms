@@ -1,9 +1,16 @@
 const mongoose = require('mongoose');
+const {v4: uuidv4} = require("uuid");
 const Schema = mongoose.Schema;
 
+const AnswerSchema = new Schema({
+    questionId: {type: String, required: true},
+    response: {type: String, required: true},
+    type: {type: String, required: true}
+})
+
 const ResponseSchema = new Schema({
-    formId: {type: Scheman.Types.ObjectId, ref: 'Form', required: true},
-    answers: [{type: String, required: true}],
+    formId: {type: String, required: true},
+    responses: [AnswerSchema],
     createdAt: {type: Date, default: Date.now},
 });
 
