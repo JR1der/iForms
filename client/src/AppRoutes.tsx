@@ -8,6 +8,8 @@ import {FormsPage} from "./pages/FormsPage/FormsPage.tsx";
 import {FormPage} from "./pages/FormPage/FormPage.tsx";
 import {CreatePage} from "./pages/CreatePage/CreatePage.tsx";
 import {EditFormPage} from "./pages/EditFormPage/EditFormPage.tsx";
+import {ResponsePage} from "./pages/ResponsePage/ResponsePage.tsx";
+import {ResponseDetailsPage} from "./pages/ResponseDetailsPage/ResponseDetailsPage.tsx";
 
 export type RouteConfig = RouteProps & {
     path: string;
@@ -44,6 +46,16 @@ export const routes: RouteConfig[] = [
         isPrivate: false,
         path: "/home",
         element: <HomePage/>,
+    },
+    {
+        isPrivate: true,
+        path: "/form/responses/:id",
+        element: <ResponsePage/>,
+    },
+    {
+        isPrivate: true,
+        path: "/form/responseDetails/:id",
+        element: <ResponseDetailsPage/>,
     },
     {
         isPrivate: true,

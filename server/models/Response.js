@@ -3,12 +3,14 @@ const {v4: uuidv4} = require("uuid");
 const Schema = mongoose.Schema;
 
 const AnswerSchema = new Schema({
+    question: {type: String, required: true},
     questionId: {type: String, required: true},
     response: {type: String, required: true},
     type: {type: String, required: true}
 })
 
 const ResponseSchema = new Schema({
+    responseId: {type: String, unique: true, default: uuidv4},
     formId: {type: String, required: true},
     responses: [AnswerSchema],
     createdAt: {type: Date, default: Date.now},

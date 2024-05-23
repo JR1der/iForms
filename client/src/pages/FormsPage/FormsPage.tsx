@@ -4,17 +4,23 @@ import Button from "@mui/material/Button";
 import FormItem from "./components/FormItem.tsx";
 import ErrorPage from "../../components/ErrorPage.tsx";
 import {useForms} from "../../hooks/useForms.ts";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {DeleteConfirmationModal} from "./components/DeleteConfirmationModal.tsx";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import Tooltip from "@mui/material/Tooltip";
 
 export const FormsPage = () => {
     const navigate = useNavigate();
     const {user} = useAuth();
     const [forms, deleteForm, isLoading, error] = useForms(user.email);
-    const [isAlertVisible] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedFormId, setSelectedFormId] = useState('');
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const handleDeleteForm = async (formId: string) => {
         await deleteForm(formId);
@@ -32,38 +38,55 @@ export const FormsPage = () => {
 
     return (
         <BaseLayout>
-            <div>
-                <Button
-                    fullWidth
-                    onClick={() => navigate('/forms/create')}
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    sx={{marginBottom: '20px'}}
-                >
-                    Create Form
-                </Button>
-                {(isLoading || isAlertVisible) && <ErrorPage message="Loading..." type="info"/>}
-                {!isLoading && !isAlertVisible && error && <ErrorPage message="Error fetching forms" type="error"/>}
+            <Box sx={{padding: 3}}>
+                <Tooltip title="Click to create a new form">
+                    <Button
+                        fullWidth
+                        onClick={() => navigate('/forms/create')}
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        sx={{marginBottom: 3}}
+                    >
+                        Create Form
+                    </Button>
+                </Tooltip>
+                {isLoading && (
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '70vh',
+                    }}>
+                        <CircularProgress/>
+                    </Box>
+                )}
+                {!isLoading && error && (
+                    <ErrorPage message="Error fetching forms. Please try again later." type="error"/>
+                )}
                 {!isLoading && !error && (!forms || !forms.data || forms.data.length === 0) && (
-                    <ErrorPage message="No forms available" type="info"/>
+                    <ErrorPage message="No forms available. Create a new form to get started!" type="info"/>
                 )}
                 {!isLoading && !error && forms && forms.data && forms.data.length > 0 && (
-                    forms.data.map((form: any) => (
-                        <div key={form.formId}>
-                            <FormItem
-                                form={form}
-                                handleDeleteForm={() => handleOpenModal(form.formId)}
-                            />
-                        </div>
-                    ))
+                    <Box>
+                        {forms.data.map((form: any) => (
+                            <Tooltip key={form.formId} title="Click to view or edit this form">
+                                <Box sx={{marginBottom: 2}}>
+                                    <FormItem
+                                        form={form}
+                                        handleDeleteForm={() => handleOpenModal(form.formId)}
+                                    />
+                                </Box>
+                            </Tooltip>
+                        ))}
+                    </Box>
                 )}
-            </div>
+            </Box>
             <DeleteConfirmationModal
                 open={modalOpen}
                 onClose={handleCloseModal}
                 onDelete={() => handleDeleteForm(selectedFormId)}
             />
         </BaseLayout>
-    )
-}
+    );
+};

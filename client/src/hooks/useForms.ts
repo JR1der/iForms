@@ -4,17 +4,24 @@ import {useQuery} from "@tanstack/react-query";
 
 export const useForms = (email: string,) => {
     const [forms, setForms] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
-    const {isLoading, error, data} = useQuery({
+    const {error} = useQuery({
         queryKey: ['forms', email],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:3000/form/forms/${email}`);
-            if (!res.ok) {
-                throw new Error(`Failed to fetch forms: ${res.statusText}`);
+            try {
+                const res = await fetch(`http://localhost:3000/form/forms/${email}`);
+                if (!res.ok) {
+                    throw new Error(`Failed to fetch forms: ${res.statusText}`);
+                }
+                const formsData = await res.json();
+                setForms(formsData);
+                return formsData;
+            } catch (error) {
+                console.error('An error occurred while fetching forms:', error);
+            } finally {
+                setIsLoading(false);
             }
-            const formsData = await res.json();
-            setForms(formsData);
-            return formsData; // Return the fetched data
         }
     })
 

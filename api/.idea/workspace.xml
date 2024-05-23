@@ -7,18 +7,16 @@
     <list default="true" id="c621f048-3ce0-49a0-b2ed-2103899fd3d2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/AppRoutes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/AppRoutes.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/layout/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/layout/Footer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/layout/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/layout/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/hooks/useForm.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/hooks/useForm.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/hooks/useForms.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/hooks/useForms.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/pages/CreatePage/CreatePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/CreatePage/CreatePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/pages/CreatePage/components/FormQuestion.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/CreatePage/components/CreateFormQuestion.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/CreatePage/components/CreateFormQuestion.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/CreatePage/components/CreateFormQuestion.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/pages/FormPage/FormPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/FormPage/FormPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/pages/FormPage/components/FormQuestion.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/FormPage/components/FormQuestion.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/pages/FormsPage/FormsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/FormsPage/FormsPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/api/Form.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/api/Form.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/config/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/config/db.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/models/Form.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/models/Form.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/FormsPage/components/DeleteConfirmationModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/FormsPage/components/DeleteConfirmationModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/api/Response.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/api/Response.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/models/Response.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/models/Response.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +72,7 @@
       <updated>1716030396308</updated>
       <workItem from="1716030397357" duration="20504000" />
       <workItem from="1716146047779" duration="10670000" />
-      <workItem from="1716221121956" duration="24053000" />
+      <workItem from="1716221121956" duration="50592000" />
     </task>
     <servers />
   </component>

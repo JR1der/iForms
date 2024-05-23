@@ -1,11 +1,12 @@
 import {BaseLayout} from "../../layout/BaseLayout.tsx";
 import {useState} from "react";
 import Container from "@mui/material/Container";
-import {Box, MenuItem, TextField} from "@mui/material";
+import {Box, MenuItem, TextField, Tooltip} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useAuth} from "../../providers/AuthProvider.tsx";
 import ErrorPage from "../../components/ErrorPage.tsx";
 import {CreateFormQuestion} from "./components/CreateFormQuestion.tsx";
+import {CreatedModal} from "./components/CreatedModal.tsx";
 
 const questionTypes = [
     {value: 'shortAnswer', label: 'Short Answer'},
@@ -22,6 +23,7 @@ export const CreatePage = () => {
     const [questionType, setQuestionType] = useState(questionTypes[0].value);
     const [error, setError] = useState("");
     const [errorType, setErrorType] = useState("");
+    const [openModal, setOpenModal] = useState(false);
 
     const handleAddQuestion = () => {
         const newQuestion = {text: questionText, type: questionType};
@@ -70,6 +72,7 @@ export const CreatePage = () => {
                 setErrorType('success');
                 setTitle('');
                 setQuestions([]);
+                setOpenModal(true);
             } else {
                 setError(result.message);
                 setErrorType('warning')
@@ -81,26 +84,35 @@ export const CreatePage = () => {
         }
     }
 
+    const handleCloseModal = () => {
+        setOpenModal(false);
+        window.location.reload(); // Refresh the page
+    };
+
     return (
         <BaseLayout>
             <Container>
                 <Box my={4}>
                     {error && <ErrorPage message={error} type={errorType}/>}
-                    <TextField
-                        fullWidth
-                        label="Title of the form"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        margin="normal"
-                    />
-                    <TextField
-                        fullWidth
-                        label="Question Header"
-                        value={questionText}
-                        onChange={(e) => setQuestionText(e.target.value)}
-                        margin="normal"
-                    />
-                    <Box display="flex" display="flex" sx={{
+                    <Tooltip title="Enter the title for your form">
+                        <TextField
+                            fullWidth
+                            label="Title of the form"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            margin="normal"
+                        />
+                    </Tooltip>
+                    <Tooltip title="Enter the header for your question">
+                        <TextField
+                            fullWidth
+                            label="Question Header"
+                            value={questionText}
+                            onChange={(e) => setQuestionText(e.target.value)}
+                            margin="normal"
+                        />
+                    </Tooltip>
+                    <Box display="flex" sx={{
                         flexDirection: {xs: 'column', sm: 'row'},
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -121,12 +133,16 @@ export const CreatePage = () => {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <Button sx={{
-                            height: {xs:'40px',sm:'54px'} , // Same height as the TextField
-                            mt: { xs: 1, sm:1}  // Adjust margin for smaller screens
-                        }} fullWidth variant="contained" color="primary" onClick={handleAddQuestion}>
-                            Add Question
-                        </Button>
+                        <Tooltip title="Click to add the question to your form">
+                            <Button
+                                sx={{
+                                    height: {xs: '40px', sm: '54px'},
+                                    mt: {xs: 1, sm: 1}
+                                }}
+                                fullWidth variant="contained" color="primary" onClick={handleAddQuestion}>
+                                Add Question
+                            </Button>
+                        </Tooltip>
                     </Box>
                     {questions.map((question, index) => (
                         <CreateFormQuestion key={index} question={question} index={index}
@@ -134,10 +150,13 @@ export const CreatePage = () => {
                                             handleDeleteQuestion={handleDeleteQuestion}
                         />
                     ))}
-                    <Button fullWidth variant="contained" color="primary" onClick={handleCreateForm} sx={{mt: 4}}>
-                        Create Form
-                    </Button>
+                    <Tooltip title="Click to create your form">
+                        <Button fullWidth variant="contained" color="primary" onClick={handleCreateForm} sx={{mt: 4}}>
+                            Create Form
+                        </Button>
+                    </Tooltip>
                 </Box>
+                <CreatedModal handleCloseModal={handleCloseModal} openModal={openModal}/>
             </Container>
         </BaseLayout>
     )
