@@ -7,7 +7,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.6.2",
     "mongoose": "^8.4.0",
+    "natural": "^7.0.5",
     "nodemon": "^3.1.0",
+    "stopword": "^3.0.1",
     "uuid": "^9.0.1"
   },
   "name": "api",

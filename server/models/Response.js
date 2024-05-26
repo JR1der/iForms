@@ -6,7 +6,11 @@ const AnswerSchema = new Schema({
     question: {type: String, required: true},
     questionId: {type: String, required: true},
     response: {type: String, required: true},
-    type: {type: String, required: true}
+    type: {type: String, required: true},
+    sentiment: {
+        score: {type: Number},
+        label: {type: String}
+    }
 })
 
 const ResponseSchema = new Schema({

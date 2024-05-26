@@ -1,27 +1,20 @@
-import { BaseLayout } from "../../layout/BaseLayout.tsx";
-import { Backdrop, Box, Card, Fade, Modal, Typography } from "@mui/material";
+import {BaseLayout} from "../../layout/BaseLayout.tsx";
+import {Backdrop, Box, Card, Fade, Modal, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
-import { useForm } from "../../hooks/useForm.ts";
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {useForm} from "../../hooks/useForm.ts";
+import {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
 import Container from "@mui/material/Container";
 import ErrorPage from "../../components/ErrorPage.tsx";
-import { useAuth } from "../../providers/AuthProvider.tsx";
-import { FormQuestion } from "./components/FormQuestion.tsx";
-import { SubmittedModal } from "./components/SubmittedModal.tsx";
+import {useAuth} from "../../providers/AuthProvider.tsx";
+import {FormQuestion} from "./components/FormQuestion.tsx";
+import {SubmittedModal} from "./components/SubmittedModal.tsx";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
 
-const questionTypes = [
-    { value: 'shortAnswer', label: 'Short Answer' },
-    { value: 'longAnswer', label: 'Long Answer' },
-    { value: 'rating5', label: 'Rating (1-5)' },
-    { value: 'rating10', label: 'Rating (1-10)' },
-];
-
 export const FormPage = () => {
-    const { user } = useAuth();
-    const { id } = useParams();
+    const {user} = useAuth();
+    const {id} = useParams();
     const [forms, deleteForm, isLoading, isError] = useForm(id);
     const [error, setError] = useState("");
     const [errorType, setErrorType] = useState("");
@@ -29,7 +22,14 @@ export const FormPage = () => {
     const [responseErrorType, setResponseErrorType] = useState("");
     const [responses, setResponses] = useState([]);
     const [openModal, setOpenModal] = useState(false);
+    const [fadeIn, setFadeIn] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!isLoading) {
+            setFadeIn(true);
+        }
+    }, [isLoading]);
 
     const handleEdit = () => {
         navigate(`/formEdit/${id}`)
@@ -89,7 +89,7 @@ export const FormPage = () => {
                         height: '70vh',
                     }}
                 >
-                    <CircularProgress />
+                    <CircularProgress/>
                 </Box>
             </BaseLayout>
         );
@@ -98,35 +98,52 @@ export const FormPage = () => {
     return (
         <BaseLayout>
             <Container>
-                <Box my={4}>
+                <Box my={4} sx={{
+                    transition: 'opacity 0.5s, transform 0.5s',
+                    opacity: fadeIn ? 1 : 0,
+                    transform: fadeIn ? 'translateY(0)' : 'translateY(20px)'
+                }}>
                     {isError ? (
                         <ErrorPage message={error} type={errorType}/>
                     ) : (
                         <Box>
-                            <Tooltip title="View form statistics">
-                                <Button fullWidth variant="contained" sx={{ mb: 2 }} onClick={() => navigate(`/form/responses/${id}`)}>
-                                    Form Statistics
-                                </Button>
-                            </Tooltip>
+                            <Box sx={{display: 'flex', flexDirection: 'row'}}>
+                                {user?.email === forms.data?.createdBy && (
+                                    <Tooltip title="Edit form">
+                                        <Button fullWidth variant="outlined" onClick={handleEdit}
+                                                sx={{mr: 1, fontWeight: 'bold'}}>
+                                            click to edit the form
+                                        </Button>
+                                    </Tooltip>
+                                )}
+                                <Tooltip title="View form statistics">
+                                    <Button fullWidth variant="outlined" sx={{ml: 1, fontWeight: 'bold'}}
+                                            onClick={() => navigate(`/form/responses/${id}`)}>
+                                        click to show form statistics
+                                    </Button>
+                                </Tooltip>
+                            </Box>
                             {responseError && <ErrorPage message={responseError} type={responseErrorType}/>}
-                            <Card sx={{ p: 2, mt: 2 }}>
-                                <Typography variant="h5" component="h2">
+                            <Card sx={{p: 2, mt: 2, backgroundColor: 'primary.main', color: 'white'}}>
+                                <Typography variant="h5" component="h1" sx={{fontWeight: 'bold', p: 1}}>
                                     {forms.data?.title}
                                 </Typography>
                             </Card>
                             {user?.email === forms.data?.createdBy && (
                                 <Tooltip title="Edit form">
-                                    <Button fullWidth variant="contained" onClick={handleEdit} sx={{ mt: 2 }}>
-                                        Edit Form
+                                    <Button fullWidth variant="outlined" onClick={handleEdit}
+                                            sx={{mt: 2, fontWeight: 'bold'}}>
+                                        click to edit the form
                                     </Button>
                                 </Tooltip>
                             )}
                             {forms.data?.questions && forms.data.questions.map((question, index) => (
-                                <FormQuestion key={index} question={question} index={index} handleResponseChange={handleResponseChange}/>
+                                <FormQuestion key={index} question={question} index={index}
+                                              handleResponseChange={handleResponseChange}/>
                             ))}
                             <Tooltip title="Submit form">
-                                <Button fullWidth variant="contained" onClick={handleSubmit} sx={{ mt: 2 }}>
-                                    Submit Form
+                                <Button fullWidth variant="contained" onClick={handleSubmit} sx={{mt: 2}}>
+                                    click to submit your responses
                                 </Button>
                             </Tooltip>
                         </Box>

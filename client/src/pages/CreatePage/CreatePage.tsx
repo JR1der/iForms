@@ -1,7 +1,18 @@
 import {BaseLayout} from "../../layout/BaseLayout.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Container from "@mui/material/Container";
-import {Box, MenuItem, TextField, Tooltip} from "@mui/material";
+import {
+    Box,
+    Card,
+    Checkbox,
+    Dialog, DialogActions,
+    DialogContent, DialogContentText,
+    DialogTitle,
+    MenuItem,
+    TextField,
+    Tooltip,
+    Typography
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import {useAuth} from "../../providers/AuthProvider.tsx";
 import ErrorPage from "../../components/ErrorPage.tsx";
@@ -24,12 +35,27 @@ export const CreatePage = () => {
     const [error, setError] = useState("");
     const [errorType, setErrorType] = useState("");
     const [openModal, setOpenModal] = useState(false);
+    const [fadeIn, setFadeIn] = useState(false);
+    const [useNlp, setUseNlp] = useState(false);
+    const [infoModalOpen, setInfoModalOpen] = useState(false);
+
+    useEffect(() => {
+        setFadeIn(true);
+    }, []);
 
     const handleAddQuestion = () => {
-        const newQuestion = {text: questionText, type: questionType};
+        let modifiedQuestionType = questionType;
+        if (questionType === 'shortAnswer' || questionType === 'longAnswer') {
+            if (useNlp) {
+                modifiedQuestionType = questionType === 'shortAnswer' ? 'shortAnswerML' : 'longAnswerML';
+            }
+        }
+
+        const newQuestion = {text: questionText, type: modifiedQuestionType};
         setQuestions([...questions, newQuestion]);
         setQuestionText('');
         setQuestionType(questionTypes[0].value);
+        setUseNlp(false);
     }
 
     const handleDeleteQuestion = (index) => {
@@ -86,13 +112,25 @@ export const CreatePage = () => {
 
     const handleCloseModal = () => {
         setOpenModal(false);
-        window.location.reload(); // Refresh the page
+        window.location.reload();
+    };
+
+    const handleInfoModalOpen = () => {
+        setInfoModalOpen(true);
+    };
+
+    const handleInfoModalClose = () => {
+        setInfoModalOpen(false);
     };
 
     return (
         <BaseLayout>
             <Container>
-                <Box my={4}>
+                <Box my={4} sx={{
+                    transition: 'opacity 0.5s, transform 0.5s',
+                    opacity: fadeIn ? 1 : 0,
+                    transform: fadeIn ? 'translateY(0)' : 'translateY(20px)'
+                }}>
                     {error && <ErrorPage message={error} type={errorType}/>}
                     <Tooltip title="Enter the title for your form">
                         <TextField
@@ -111,6 +149,37 @@ export const CreatePage = () => {
                             onChange={(e) => setQuestionText(e.target.value)}
                             margin="normal"
                         />
+                    </Tooltip>
+                    <Tooltip title="Enable NLP analysis for this question">
+                        <Card sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            p: 1,
+                            backgroundColor: 'primary.main',
+                            color: 'white',
+                            mt: 2
+                        }} my={2}>
+                            <Checkbox
+                                checked={useNlp}
+                                onChange={(e) => setUseNlp(e.target.checked)}
+                                inputProps={{'aria-label': 'Enable NLP analysis'}}
+                                sx={{
+                                    color: 'white', '&.Mui-checked': {
+                                        color: 'white',
+                                    },
+                                }}
+                            />
+                            <Typography>Enable sentiment analysis</Typography>
+                            <Button variant="outlined" sx={{
+                                backgroundColor: 'white',
+                                '&:hover': {backgroundColor: 'primary.light', color: 'white'},
+                                ml: 3
+                            }}
+                                    onClick={handleInfoModalOpen}>
+                                What is this?
+                            </Button>
+                        </Card>
                     </Tooltip>
                     <Box display="flex" sx={{
                         flexDirection: {xs: 'column', sm: 'row'},
@@ -157,6 +226,32 @@ export const CreatePage = () => {
                     </Tooltip>
                 </Box>
                 <CreatedModal handleCloseModal={handleCloseModal} openModal={openModal}/>
+                <Dialog
+                    open={infoModalOpen}
+                    onClose={handleInfoModalClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"What is Sentiment Analysis?"}</DialogTitle>
+                    <DialogContent>
+
+                        <DialogContentText id="alert-dialog-description">
+                            Sentiment analysis is the process of using natural language processing (NLP) to determine
+                            the emotional tone behind words.
+                            It helps in identifying the sentiment expressed in a text, whether it's positive, negative,
+                            or neutral. This can provide deeper insights into the responses given in the form.
+                        </DialogContentText>
+                        <Typography sx={{fontWeight: 'bold', mt: 2}}>
+                            I strongly advise you to use it only when you are sure that you question can be answered
+                            with positive, negative or neutral sentiment
+                        </Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleInfoModalClose} color="primary" autoFocus>
+                            Close
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Container>
         </BaseLayout>
     )

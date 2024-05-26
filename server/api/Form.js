@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Form = require('../models/Form');
+const Response = require('../models/Response');
 const User = require('../models/User');
 const {v4: uuidv4} = require('uuid');
 
@@ -46,10 +47,10 @@ router.post('/create', async (req, res) => {
                 message: "Question must be a non-empty string"
             });
         }
-        if (typeof question.type !== 'string' || !['shortAnswer', 'longAnswer', 'rating5', 'rating10'].includes(question.type)) {
+        if (typeof question.type !== 'string' || !['shortAnswer', 'longAnswer', 'rating5', 'rating10', 'shortAnswerML', 'longAnswerML'].includes(question.type)) {
             return res.json({
                 status: "FAILED",
-                message: "Question type must be one of 'shortAnswer', 'longAnswer', 'rating5' or 'rating10"
+                message: "Question type must be one of 'shortAnswer', 'longAnswer', 'rating5', 'rating10, 'shortAnswerML' or 'longAnswerML'"
             });
         }
     }
@@ -67,7 +68,8 @@ router.post('/create', async (req, res) => {
             title,
             questions,
             createdBy: email,
-            uniqueLink: uuidv4()
+            uniqueLink: uuidv4(),
+            createdAt: new Date()
         });
 
         const savedForm = await newForm.save();
@@ -157,6 +159,8 @@ router.put('/update/:id', async (req, res) => {
             message: `Question number ${emptyQuestionIndex + 1} has an empty header!`
         });
     }
+    
+    await Response.deleteMany({formId: id});
 
     try {
         const form = await Form.findOne({formId: id});
@@ -203,7 +207,19 @@ router.delete('/delete/:id', async (req, res) => {
     }
 
     try {
+        const form = await Form.findOne({formId: id});
+
+        if (!form) {
+            return res.json({
+                status: "FAILED",
+                message: "Form not found!"
+            });
+        }
+
+        await Response.deleteMany({formId: id});
+
         const result = await Form.deleteOne({formId: id});
+
 
         if (result.deletedCount === 0) {
             return res.json({
@@ -217,6 +233,7 @@ router.delete('/delete/:id', async (req, res) => {
             message: "Form deleted successfully!",
             data: result
         });
+
     } catch (err) {
         res.json({
             status: "FAILED",

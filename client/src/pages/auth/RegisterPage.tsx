@@ -4,7 +4,7 @@ import {object, string} from "yup";
 import Container from "@mui/material/Container";
 import {Box, CssBaseline, Grid, Link, TextField, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useAuth} from "../../providers/AuthProvider.tsx";
 import {useNavigate} from "react-router-dom";
 import ErrorPage from "../../components/ErrorPage.tsx";
@@ -35,6 +35,11 @@ export const RegisterPage = () => {
     const [error, setError] = useState<string | null>(null);
     const {onRegister} = useAuth();
     const navigate = useNavigate();
+    const [fadeIn, setFadeIn] = useState(false);
+
+    useEffect(() => {
+        setFadeIn(true);
+    }, []);
 
     const formik = useFormik({
         initialValues: initialFormValues,
@@ -53,21 +58,22 @@ export const RegisterPage = () => {
         <BaseLayout>
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+                <Box sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    transition: 'opacity 0.5s, transform 0.5s',
+                    opacity: fadeIn ? 1 : 0,
+                    transform: fadeIn ? 'translateY(0)' : 'translateY(20px)'
+                }}>
                     <Typography component="h1" variant="h5" fontWeight="bold">
                         Sign Up
                     </Typography>
-                    <Box sx={{ mb: 2 }} />
+                    <Box sx={{mb: 2}}/>
                     <form onSubmit={formik.handleSubmit}>
                         {error && (
-                            <ErrorPage message={error} type='error' />
+                            <ErrorPage message={error} type='error'/>
                         )}
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>

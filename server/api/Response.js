@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Form = require('../models/Form');
 const Response = require('../models/Response');
+const getSentiment = require('../utils/getSentiment');
 const {v4: uuidv4} = require('uuid');
 
 router.post('/submitResponse/:formId', async (req, res) => {
@@ -33,11 +34,18 @@ router.post('/submitResponse/:formId', async (req, res) => {
                 message: "You haven't responded to all questions"
             });
         }
-
+        const analyzedResponses = responses.map(response => {
+            const question = form.questions.find(q => q.questionId === response.questionId);
+            if (question && (question.type === 'shortAnswerML' || question.type === 'longAnswerML')) {
+                const sentiment = getSentiment(response.response);
+                return {...response, sentiment};
+            }
+            return response;
+        });
         const newResponse = new Response({
             responseId: uuidv4(),
             formId: formId,
-            responses: responses,
+            responses: analyzedResponses,
             createdAt: Date.now()
         })
 
@@ -118,7 +126,7 @@ router.get('/getResponse/:id', async (req, res) => {
 })
 
 router.get('/getQuestionResponses/:formId', async (req, res) => {
-    const {formId} = req.params;
+    const { formId } = req.params;
 
     if (!formId || formId.trim() === '') {
         return res.json({
@@ -128,7 +136,7 @@ router.get('/getQuestionResponses/:formId', async (req, res) => {
     }
 
     try {
-        const form = await Form.findOne({formId: formId});
+        const form = await Form.findOne({ formId: formId });
 
         if (!form) {
             return res.json({
@@ -137,9 +145,7 @@ router.get('/getQuestionResponses/:formId', async (req, res) => {
             })
         }
 
-        console.log(form)
-
-        const responses = await Response.find({formId: formId});
+        const responses = await Response.find({ formId: formId });
 
         if (!responses.length) {
             return res.json({
@@ -148,22 +154,47 @@ router.get('/getQuestionResponses/:formId', async (req, res) => {
             })
         }
 
-        console.log(responses);
-
         let groupedResponses = {};
         form.questions.forEach(question => {
             groupedResponses[question.questionId] = {
                 question: question.question,
-                responses: []
+                type: question.type,
+                responses: [],
+                average: null,
+                sentimentStatistics: {} // Initialize sentiment statistics
             };
         });
 
         responses.forEach(response => {
             response.responses.forEach(answer => {
                 if (groupedResponses[answer.questionId]) {
-                    groupedResponses[answer.questionId].responses.push(answer.response);
+                    if (groupedResponses[answer.questionId].type === 'shortAnswerML' || groupedResponses[answer.questionId].type === 'longAnswerML') {
+                        // Analyze sentiment for ML answers
+                        const sentiment = getSentiment(answer.response);
+                        groupedResponses[answer.questionId].responses.push({
+                            value: answer.response,
+                            sentiment: sentiment // Include sentiment analysis
+                        });
+                        // Update sentiment statistics
+                        const sentimentLabel = sentiment.label;
+                        groupedResponses[answer.questionId].sentimentStatistics[sentimentLabel] = (groupedResponses[answer.questionId].sentimentStatistics[sentimentLabel] || 0) + 1;
+                    } else {
+                        // For other types of questions, just push the response value
+                        groupedResponses[answer.questionId].responses.push(answer.response);
+                    }
                 }
             });
+        });
+
+        // Calculate averages for rating questions
+        Object.keys(groupedResponses).forEach(questionId => {
+            const questionData = groupedResponses[questionId];
+            if (questionData.type === 'rating5' || questionData.type === 'rating10') {
+                const numericResponses = questionData.responses.map(Number);
+                const sum = numericResponses.reduce((acc, val) => acc + val, 0);
+                const average = (sum / numericResponses.length).toFixed(2);
+                questionData.average = average;
+            }
         });
 
         let result = {};
@@ -183,6 +214,7 @@ router.get('/getQuestionResponses/:formId', async (req, res) => {
         })
     }
 })
+
 
 router.get('/getNumberStatistics/:formId', async (req, res) => {
     const {formId} = req.params;
@@ -249,6 +281,73 @@ router.get('/getNumberStatistics/:formId', async (req, res) => {
         res.json({
             status: "FAILED",
             message: "An error occurred while gathering the number statistics: " + err
+        });
+    }
+})
+
+router.get('/getSentimentStatistics/:formId', async (req, res) => {
+    const {formId} = req.params;
+
+    if (!formId || formId.trim() === '') {
+        return res.json({
+            status: "FAILED",
+            message: "Form Id parameter is required"
+        });
+    }
+
+    try {
+        const form = await Form.findOne({formId: formId});
+
+        if (!form) {
+            return res.json({
+                status: "FAILED",
+                message: "Form not found!"
+            });
+        }
+
+        const responses = await Response.find({formId: formId});
+
+        if (!responses.length) {
+            return res.json({
+                status: "FAILED",
+                message: "There are no responses to this form"
+            });
+        }
+
+        let sentimentStatistics = {};
+        form.questions.forEach(question => {
+            if (question.type === 'shortAnswerML' || question.type === 'longAnswerML') {
+                sentimentStatistics[question.questionId] = {
+                    question: question.question,
+                    type: question.type,
+                    sentimentCounts: {
+                        'very negative': 0,
+                        'negative': 0,
+                        'neutral': 0,
+                        'positive': 0,
+                        'very positive': 0
+                    }
+                };
+            }
+        });
+
+        responses.forEach(response => {
+            response.responses.forEach(answer => {
+                if (sentimentStatistics[answer.questionId] && answer.sentiment) {
+                    sentimentStatistics[answer.questionId].sentimentCounts[answer.sentiment.label]++;
+                }
+            });
+        });
+
+        res.json({
+            status: "SUCCESS",
+            message: "Sentiment statistics calculated successfully",
+            data: sentimentStatistics
+        });
+    } catch (err) {
+        res.json({
+            status: "FAILED",
+            message: "An error occurred while gathering the sentiment statistics: " + err
         });
     }
 })

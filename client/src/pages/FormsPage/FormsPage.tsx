@@ -17,6 +17,13 @@ export const FormsPage = () => {
     const [forms, deleteForm, isLoading, error] = useForms(user.email);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedFormId, setSelectedFormId] = useState('');
+    const [fadeIn, setFadeIn] = useState(false);
+
+    useEffect(() => {
+        if (!isLoading) {
+            setFadeIn(true);
+        }
+    }, [isLoading]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -38,7 +45,12 @@ export const FormsPage = () => {
 
     return (
         <BaseLayout>
-            <Box sx={{padding: 3}}>
+            <Box sx={{
+                padding: 3,
+                transition: 'opacity 0.5s, transform 0.5s',
+                opacity: fadeIn ? 1 : 0,
+                transform: fadeIn ? 'translateY(0)' : 'translateY(20px)'
+            }}>
                 <Tooltip title="Click to create a new form">
                     <Button
                         fullWidth
@@ -69,15 +81,15 @@ export const FormsPage = () => {
                 )}
                 {!isLoading && !error && forms && forms.data && forms.data.length > 0 && (
                     <Box>
-                        {forms.data.map((form: any) => (
-                            <Tooltip key={form.formId} title="Click to view or edit this form">
-                                <Box sx={{marginBottom: 2}}>
-                                    <FormItem
-                                        form={form}
-                                        handleDeleteForm={() => handleOpenModal(form.formId)}
-                                    />
-                                </Box>
-                            </Tooltip>
+                        {forms.data.map((form: any, index) => (
+                            <Box key={index} sx={{marginBottom: 2}}>
+                                <FormItem
+                                    form={form}
+                                    handleDeleteForm={() => handleOpenModal(form.formId)}
+                                    index={index}
+                                />
+                            </Box>
+
                         ))}
                     </Box>
                 )}

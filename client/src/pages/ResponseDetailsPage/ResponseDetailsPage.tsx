@@ -5,7 +5,7 @@ import {useResponse} from "../../hooks/useResponse.ts";
 import ErrorPage from "../../components/ErrorPage.tsx";
 import {FormResponseItem} from "./components/FormResponseItem.tsx";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Key } from "react";
+import {Key} from "react";
 
 export const ResponseDetailsPage = () => {
     const {id} = useParams();
@@ -13,9 +13,9 @@ export const ResponseDetailsPage = () => {
 
     return (
         <BaseLayout>
-            <Card sx={{p: 2, mb: 2}}>
+            <Card sx={{p: 2, mb: 2, backgroundColor: 'primary.main', color: 'white'}}>
                 <Typography variant="h6" component="div" textAlign="center">
-                    Response: {id}
+                    Response Details
                 </Typography>
             </Card>
             {isLoading && (

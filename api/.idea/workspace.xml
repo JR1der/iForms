@@ -5,18 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c621f048-3ce0-49a0-b2ed-2103899fd3d2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../client/src/pages/ResponsePage/components/StatisticsQuestion.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/AppRoutes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/AppRoutes.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/hooks/useForm.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/hooks/useForm.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/hooks/useForms.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/hooks/useForms.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/hooks/useQuestionsResponses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/hooks/useQuestionsResponses.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/pages/CreatePage/CreatePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/CreatePage/CreatePage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/pages/CreatePage/components/CreateFormQuestion.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/CreatePage/components/CreateFormQuestion.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/EditFormPage/EditFormPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/EditFormPage/EditFormPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/EditFormPage/components/EditFormQuestion.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/EditFormPage/components/EditFormQuestion.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/pages/FormPage/FormPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/FormPage/FormPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/pages/FormPage/components/FormQuestion.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/FormPage/components/FormQuestion.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/pages/FormsPage/FormsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/FormsPage/FormsPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/pages/FormsPage/components/DeleteConfirmationModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/FormsPage/components/DeleteConfirmationModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/FormsPage/components/FormItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/FormsPage/components/FormItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/HomePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/ProfilePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/ResponseDetailsPage/ResponseDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/ResponseDetailsPage/ResponseDetailsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/ResponseDetailsPage/components/FormResponseItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/ResponseDetailsPage/components/FormResponseItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/ResponsePage/ResponsePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/ResponsePage/ResponsePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/ResponsePage/components/ResponseItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/ResponsePage/components/ResponseItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/ResponsePage/components/StatisticsChart.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/auth/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/auth/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/auth/RegisterPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/auth/RegisterPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/api/Form.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/api/Form.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/api/Response.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/api/Response.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/models/Form.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/models/Form.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/models/Response.js" beforeDir="false" afterPath="$PROJECT_DIR$/../server/models/Response.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../server/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../server/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +69,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/../server/utils" />
       <recent name="$PROJECT_DIR$/config" />
     </key>
   </component>
@@ -72,7 +90,7 @@
       <updated>1716030396308</updated>
       <workItem from="1716030397357" duration="20504000" />
       <workItem from="1716146047779" duration="10670000" />
-      <workItem from="1716221121956" duration="50592000" />
+      <workItem from="1716221121956" duration="77647000" />
     </task>
     <servers />
   </component>

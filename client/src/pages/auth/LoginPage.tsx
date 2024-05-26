@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 import {Box, CssBaseline, Grid, Link, TextField, Typography} from "@mui/material";
 import {useAuth, LoginUserData} from "../../providers/AuthProvider.tsx";
 import Button from "@mui/material/Button";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ErrorPage from "../../components/ErrorPage.tsx";
 
 const validationSchema = object({
@@ -19,6 +19,11 @@ const initialFormValues: LoginUserData = {
 export const LoginPage = () => {
     const [error, setError] = useState<string | null>(null);
     const {onLogin} = useAuth();
+    const [fadeIn, setFadeIn] = useState(false);
+
+    useEffect(() => {
+        setFadeIn(true);
+    }, []);
 
     const formik = useFormik({
         initialValues: initialFormValues,
@@ -35,15 +40,15 @@ export const LoginPage = () => {
         <BaseLayout>
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
-
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+                <Box sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    transition: 'opacity 0.5s, transform 0.5s',
+                    opacity: fadeIn ? 1 : 0,
+                    transform: fadeIn ? 'translateY(0)' : 'translateY(20px)'
+                }}>
                     <Typography component="h1" variant="h5" fontWeight="bold">
                         Sign in
                     </Typography>
