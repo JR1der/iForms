@@ -129,14 +129,6 @@ export const FormPage = () => {
                                     {forms.data?.title}
                                 </Typography>
                             </Card>
-                            {user?.email === forms.data?.createdBy && (
-                                <Tooltip title="Edit form">
-                                    <Button fullWidth variant="outlined" onClick={handleEdit}
-                                            sx={{mt: 2, fontWeight: 'bold'}}>
-                                        click to edit the form
-                                    </Button>
-                                </Tooltip>
-                            )}
                             {forms.data?.questions && forms.data.questions.map((question, index) => (
                                 <FormQuestion key={index} question={question} index={index}
                                               handleResponseChange={handleResponseChange}/>

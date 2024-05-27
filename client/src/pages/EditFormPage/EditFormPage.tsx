@@ -1,7 +1,7 @@
-import { BaseLayout } from "../../layout/BaseLayout.tsx";
-import { useEffect, useState } from "react";
-import { useForm } from "../../hooks/useForm.ts";
-import { useParams } from "react-router-dom";
+import {BaseLayout} from "../../layout/BaseLayout.tsx";
+import {useEffect, useState} from "react";
+import {useForm} from "../../hooks/useForm.ts";
+import {useParams} from "react-router-dom";
 import {
     Box, Card, Checkbox, Dialog,
     DialogActions,
@@ -14,18 +14,18 @@ import {
 } from "@mui/material";
 import ErrorPage from "../../components/ErrorPage.tsx";
 import Button from "@mui/material/Button";
-import { EditFormQuestion } from "./components/EditFormQuestion.tsx";
+import {EditFormQuestion} from "./components/EditFormQuestion.tsx";
 import Container from "@mui/material/Container";
 
 const questionTypes = [
-    { value: 'shortAnswer', label: 'Short Answer' },
-    { value: 'longAnswer', label: 'Long Answer' },
-    { value: 'rating5', label: 'Rating (1-5)' },
-    { value: 'rating10', label: 'Rating (1-10)' },
+    {value: 'shortAnswer', label: 'Short Answer'},
+    {value: 'longAnswer', label: 'Long Answer'},
+    {value: 'rating5', label: 'Rating (1-5)'},
+    {value: 'rating10', label: 'Rating (1-10)'},
 ];
 
 export const EditFormPage = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const [forms, deleteForm, isLoading, isError] = useForm(id);
     const [title, setTitle] = useState('');
     const [questions, setQuestions] = useState([]);
@@ -59,7 +59,7 @@ export const EditFormPage = () => {
             }
         }
 
-        const newQuestion = { question: questionText, type: questionType };
+        const newQuestion = {question: questionText, type: questionType};
         setQuestions([...questions, newQuestion]);
         setQuestionText('');
         setQuestionType(questionTypes[0].value);
@@ -141,12 +141,12 @@ export const EditFormPage = () => {
 
     if (isLoading) {
         return (
-            <ErrorPage message="Loading..." type="info" />
+            <ErrorPage message="Loading..." type="info"/>
         )
     }
 
     if (isError) {
-        return <ErrorPage message="An error occurred while loading the form." type="error" />;
+        return <ErrorPage message="An error occurred while loading the form." type="error"/>;
     }
 
     const handleInfoModalOpen = () => {
@@ -160,8 +160,12 @@ export const EditFormPage = () => {
     return (
         <BaseLayout>
             <Container>
-                <Box my={4} sx={{ transition: 'opacity 0.5s, transform 0.5s', opacity: fadeIn ? 1 : 0, transform: fadeIn ? 'translateY(0)' : 'translateY(20px)' }}>
-                    {error && <ErrorPage message={error} type={errorType} />}
+                <Box my={4} sx={{
+                    transition: 'opacity 0.5s, transform 0.5s',
+                    opacity: fadeIn ? 1 : 0,
+                    transform: fadeIn ? 'translateY(0)' : 'translateY(20px)'
+                }}>
+                    {error && <ErrorPage message={error} type={errorType}/>}
                     <TextField
                         fullWidth
                         label="Title of the form"
@@ -169,7 +173,7 @@ export const EditFormPage = () => {
                         onChange={(e) => setTitle(e.target.value)}
                         margin="normal"
                     />
-                    <Button fullWidth variant="contained" color="primary" onClick={handleConfirmEdit} sx={{ mt: 2 }}>
+                    <Button fullWidth variant="contained" color="primary" onClick={handleConfirmEdit} sx={{mt: 2}}>
                         Confirm form edit
                     </Button>
                     <TextField
@@ -191,7 +195,7 @@ export const EditFormPage = () => {
                         <Checkbox
                             checked={useNlp}
                             onChange={(e) => setUseNlp(e.target.checked)}
-                            inputProps={{ 'aria-label': 'Enable NLP analysis' }}
+                            inputProps={{'aria-label': 'Enable NLP analysis'}}
                             sx={{
                                 color: 'white', '&.Mui-checked': {
                                     color: 'white',
@@ -201,7 +205,7 @@ export const EditFormPage = () => {
                         <Typography>Enable sentiment analysis</Typography>
                         <Button variant="outlined" sx={{
                             backgroundColor: 'white',
-                            '&:hover': { backgroundColor: 'primary.light', color: 'white' },
+                            '&:hover': {backgroundColor: 'primary.light', color: 'white'},
                             ml: 3
                         }}
                                 onClick={handleInfoModalOpen}>
@@ -209,7 +213,7 @@ export const EditFormPage = () => {
                         </Button>
                     </Card>
                     <Box display="flex" sx={{
-                        flexDirection: { xs: 'column', sm: 'row' },
+                        flexDirection: {xs: 'column', sm: 'row'},
                         justifyContent: 'center',
                         alignItems: 'center',
                         gap: 2,
@@ -230,8 +234,8 @@ export const EditFormPage = () => {
                             ))}
                         </TextField>
                         <Button sx={{
-                            height: { xs: '40px', sm: '54px' }, // Same height as the TextField
-                            mt: { xs: 1, sm: 1 }  // Adjust margin for smaller screens
+                            height: {xs: '40px', sm: '54px'}, // Same height as the TextField
+                            mt: {xs: 1, sm: 1}  // Adjust margin for smaller screens
                         }} fullWidth variant="contained" color="primary" onClick={handleAddQuestion}>
                             Add Question
                         </Button>
@@ -258,7 +262,7 @@ export const EditFormPage = () => {
                             It helps in identifying the sentiment expressed in a text, whether it's positive, negative,
                             or neutral. This can provide deeper insights into the responses given in the form.
                         </DialogContentText>
-                        <Typography sx={{ fontWeight: 'bold', mt: 2 }}>
+                        <Typography sx={{fontWeight: 'bold', mt: 2}}>
                             I strongly advise you to use it only when you are sure that your question can be answered
                             with positive, negative or neutral sentiment
                         </Typography>
